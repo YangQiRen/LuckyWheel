@@ -13,6 +13,9 @@ import rubikstudio.library.LuckyWheelView;
 import rubikstudio.library.model.LuckyItem;
 
 public class MainActivity extends AppCompatActivity {
+
+    // 一回合 5 秒
+    private static final int secondOfRound = 5;
     List<LuckyItem> data = new ArrayList<>();
 
     @Override
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         /////////////////////
 
         luckyWheelView.setData(data);
-        luckyWheelView.setRound(getRandomRound());
+        luckyWheelView.setRound(secondOfRound);
         luckyWheelView.setPieBackgroundImage(R.drawable.wheel4);
 //        luckyWheelView.setLuckyWheelCursorImage(R.drawable.ic_cursor);
 
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int getRandomIndex() {
         Random rand = new Random();
-        return rand.nextInt(data.size() - 1) + 0;
+        return rand.nextInt(data.size() - 1);
     }
 
     private int getRandomRound() {

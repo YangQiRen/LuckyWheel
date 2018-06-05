@@ -117,8 +117,7 @@ public class PielView extends View {
      * @return
      */
     private float getAngleOfIndexTarget() {
-        int tempIndex = mTargetIndex == 0 ? 1 : mTargetIndex;
-        return (360 / mLuckyItemList.size()) * tempIndex;
+        return (360 / mLuckyItemList.size()) * mTargetIndex;
     }
 
     /**
@@ -140,7 +139,7 @@ public class PielView extends View {
         float targetAngle = 360 * mRoundOfNumber + 270 - getAngleOfIndexTarget() + (360 / mLuckyItemList.size()) / 2;
         animate()
                 .setInterpolator(new DecelerateInterpolator())
-                .setDuration(mRoundOfNumber * 100 + 900L)
+                .setDuration(mRoundOfNumber * 1000)
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
