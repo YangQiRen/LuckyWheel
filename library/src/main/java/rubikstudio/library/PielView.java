@@ -6,12 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -43,6 +41,8 @@ public class PielView extends View {
     private Drawable drawableCenterImage;
     private int textColor = 0xffffffff;
 
+    private int defaultBackgroundImage = -1;
+
     private List<LuckyItem> mLuckyItemList;
 
     private PieRotateListener mPieRotateListener;
@@ -62,40 +62,20 @@ public class PielView extends View {
         this.mPieRotateListener = listener;
     }
 
-    private void init() {
-        mArcPaint = new Paint();
-        mArcPaint.setAntiAlias(true);
-        mArcPaint.setDither(true);
-
-        mTextPaint = new Paint();
-        mTextPaint.setColor(textColor);
-        mTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,14,
-                getResources().getDisplayMetrics()));
-
-        mRange = new RectF(mPadding, mPadding, mPadding+mRadius, mPadding+mRadius);
-    }
-
     public void setData(List<LuckyItem> luckyItemList) {
         this.mLuckyItemList = luckyItemList;
         invalidate();
     }
 
-    public void setPieBackgroundColor(int color) {
-        defaultBackgroundColor = color;
+    public void setPieBackgroundImage(int backgroundImage) {
+        defaultBackgroundImage = backgroundImage;
         invalidate();
     }
 
-    public void setPieCenterImage(Drawable drawable) {
-        drawableCenterImage = drawable;
-        invalidate();
-    }
+    private void drawPieBackgroundWithBitmap(Canvas canvas, int defaultBackgroundImage) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(),
+                defaultBackgroundImage);
 
-    public void setPieTextColor(int color) {
-        textColor = color;
-        invalidate();
-    }
-
-    private void drawPieBackgroundWithBitmap(Canvas canvas, Bitmap bitmap) {
         canvas.drawBitmap(bitmap, null, new Rect(mPadding/2,mPadding/2,
                 getMeasuredWidth() - mPadding/2, getMeasuredHeight()-mPadding/2), null);
     }
@@ -112,32 +92,7 @@ public class PielView extends View {
             return;
         }
 
-        drawBackgroundColor(canvas, defaultBackgroundColor);
-
-        init();
-
-        float tmpAngle = mStartAngle;
-        float sweepAngle = 360 / mLuckyItemList.size();
-
-        for(int i = 0; i < mLuckyItemList.size(); i++) {
-            mArcPaint.setColor(mLuckyItemList.get(i).color);
-            canvas.drawArc(mRange, tmpAngle, sweepAngle, true, mArcPaint);
-
-            drawText(canvas, tmpAngle, sweepAngle, mLuckyItemList.get(i).text);
-            drawImage(canvas, tmpAngle, BitmapFactory.decodeResource(getResources(), mLuckyItemList.get(i).icon));
-
-            tmpAngle += sweepAngle;
-        }
-
-        drawCenterImage(canvas, drawableCenterImage);
-    }
-
-    private void drawBackgroundColor(Canvas canvas, int color) {
-        if (color == -1)
-            return;
-        mBackgroundPaint = new Paint();
-        mBackgroundPaint.setColor(color);
-        canvas.drawCircle(mCenter, mCenter, mCenter, mBackgroundPaint);
+        drawPieBackgroundWithBitmap(canvas, defaultBackgroundImage);
     }
 
     /**
@@ -156,48 +111,6 @@ public class PielView extends View {
         mCenter = width/2;
 
         setMeasuredDimension(width, width);
-    }
-
-    /**
-     * @param canvas
-     * @param tmpAngle
-     * @param bitmap
-     */
-    private void drawImage(Canvas canvas, float tmpAngle, Bitmap bitmap) {
-        int imgWidth = mRadius / mLuckyItemList.size();
-
-        float angle = (float) ((tmpAngle + 360 / mLuckyItemList.size() / 2) * Math.PI / 180);
-
-        int x = (int) (mCenter + mRadius / 2 / 2 * Math.cos(angle));
-        int y = (int) (mCenter + mRadius / 2 / 2 * Math.sin(angle));
-
-        Rect rect = new Rect(x - imgWidth/2, y - imgWidth/2, x + imgWidth/2, y + imgWidth/2);
-        canvas.drawBitmap(bitmap, null, rect, null);
-    }
-
-    private void drawCenterImage(Canvas canvas, Drawable drawable) {
-        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawable);
-        Bitmap bitmap = LuckyWheelUtils.drawableToBitmap(drawable);
-        bitmap = Bitmap.createScaledBitmap(bitmap, 90, 90, false);
-        canvas.drawBitmap(bitmap, getMeasuredWidth() / 2 - bitmap.getWidth() / 2, getMeasuredHeight() / 2 - bitmap.getHeight() / 2, null);
-    }
-
-    /**
-     * @param canvas
-     * @param tmpAngle
-     * @param sweepAngle
-     * @param mStr
-     */
-    private void drawText(Canvas canvas, float tmpAngle, float sweepAngle, String mStr) {
-        Path path = new Path();
-        path.addArc(mRange,tmpAngle,sweepAngle);
-
-        float textWidth = mTextPaint.measureText(mStr);
-        int hOffset = (int) (mRadius * Math.PI / mLuckyItemList.size()/2-textWidth/2);
-
-        int vOffset = mRadius/2/4;
-
-        canvas.drawTextOnPath(mStr, path, hOffset, vOffset, mTextPaint);
     }
 
     /**
@@ -227,7 +140,7 @@ public class PielView extends View {
         float targetAngle = 360 * mRoundOfNumber + 270 - getAngleOfIndexTarget() + (360 / mLuckyItemList.size()) / 2;
         animate()
                 .setInterpolator(new DecelerateInterpolator())
-                .setDuration(mRoundOfNumber * 1000 + 900L)
+                .setDuration(mRoundOfNumber * 100 + 900L)
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {

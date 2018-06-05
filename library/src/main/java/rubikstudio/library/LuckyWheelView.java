@@ -75,29 +75,14 @@ public class LuckyWheelView extends RelativeLayout implements PielView.PieRotate
         ivCursorView = (ImageView) frameLayout.findViewById(R.id.cursorView);
 
         pielView.setPieRotateListener(this);
-        pielView.setPieBackgroundColor(mBackgroundColor);
-        pielView.setPieCenterImage(mCenterImage);
-        pielView.setPieTextColor(mTextColor);
 
         ivCursorView.setImageDrawable(mCursorImage);
 
         addView(frameLayout);
     }
 
-    public void setLuckyWheelBackgrouldColor(int color) {
-        pielView.setPieBackgroundColor(color);
-    }
-
     public void setLuckyWheelCursorImage(int drawable) {
         ivCursorView.setBackgroundResource(drawable);
-    }
-
-    public void setLuckyWheelCenterImage(Drawable drawable) {
-        pielView.setPieCenterImage(drawable);
-    }
-
-    public void setLuckyWheelTextColor(int color) {
-        pielView.setPieTextColor(color);
     }
 
     /**
@@ -118,5 +103,9 @@ public class LuckyWheelView extends RelativeLayout implements PielView.PieRotate
 
     public void startLuckyWheelWithTargetIndex(int index) {
         pielView.rotateTo(index);
+    }
+
+    public void setPieBackgroundImage(int drawableImage) {
+        pielView.setPieBackgroundImage(drawableImage);
     }
 }
