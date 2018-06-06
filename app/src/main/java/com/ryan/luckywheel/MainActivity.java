@@ -15,7 +15,10 @@ import rubikstudio.library.model.LuckyItem;
 public class MainActivity extends AppCompatActivity {
 
     // 一回合 5 秒
-    private static final int secondOfRound = 5;
+    private static final int SECOND_OF_ROUND = 10;
+    // 幸運輪盤有幾格
+    private static final int GRID_OF_LUCKY_WHEEL = 8;
+
     List<LuckyItem> data = new ArrayList<>();
 
     @Override
@@ -26,40 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
         final LuckyWheelView luckyWheelView = (LuckyWheelView) findViewById(R.id.luckyWheel);
 
-        LuckyItem luckyItem1 = new LuckyItem();
-        data.add(luckyItem1);
-
-        LuckyItem luckyItem2 = new LuckyItem();
-        data.add(luckyItem2);
-
-        LuckyItem luckyItem3 = new LuckyItem();
-        data.add(luckyItem3);
-
-        //////////////////
-        LuckyItem luckyItem4 = new LuckyItem();
-        data.add(luckyItem4);
-
-        LuckyItem luckyItem5 = new LuckyItem();
-        data.add(luckyItem5);
-
-        LuckyItem luckyItem6 = new LuckyItem();
-        data.add(luckyItem6);
-        //////////////////
-
-        //////////////////////
-        LuckyItem luckyItem7 = new LuckyItem();
-        data.add(luckyItem7);
-
-        LuckyItem luckyItem8 = new LuckyItem();
-        data.add(luckyItem8);
-
-
+        for ( int i = 0; i < GRID_OF_LUCKY_WHEEL; i++ ) {
+            LuckyItem luckyItem = new LuckyItem();
+            data.add(luckyItem);
+        }
 
         /////////////////////
 
         luckyWheelView.setData(data);
-        luckyWheelView.setRound(secondOfRound);
-        luckyWheelView.setPieBackgroundImage(R.drawable.wheel4);
+        luckyWheelView.setRound(SECOND_OF_ROUND);
+        luckyWheelView.setPieBackgroundImage(R.drawable.wheel3);
 //        luckyWheelView.setLuckyWheelCursorImage(R.drawable.ic_cursor);
 
         /*luckyWheelView.setLuckyWheelBackgrouldColor(0xff0000ff);

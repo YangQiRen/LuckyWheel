@@ -117,7 +117,7 @@ public class PielView extends View {
      * @return
      */
     private float getAngleOfIndexTarget() {
-        return (360 / mLuckyItemList.size()) * mTargetIndex;
+        return (360f / mLuckyItemList.size()) * mTargetIndex;
     }
 
     /**
@@ -136,7 +136,11 @@ public class PielView extends View {
         }
         mTargetIndex = index;
         setRotation(0);
-        float targetAngle = 360 * mRoundOfNumber + 270 - getAngleOfIndexTarget() + (360 / mLuckyItemList.size()) / 2;
+        //  初始值對齊 \項目0的右邊界線/，正上方箭頭對到的是項目0的右邊界線
+//        float targetAngle = 360 * mRoundOfNumber - getAngleOfIndexTarget() + (360f / mLuckyItemList.size()) / 2;
+        //  初始值對齊 \項目0的中間/，正上方箭頭對到的是項目0
+        float targetAngle = 360f * mRoundOfNumber - getAngleOfIndexTarget() ;
+
         animate()
                 .setInterpolator(new DecelerateInterpolator())
                 .setDuration(mRoundOfNumber * 1000)
