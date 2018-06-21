@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     private float getAngleOfIndexTarget(int index) {
-        return (360f / 8) * index;
+        return (360f / GRID_OF_LUCKY_WHEEL) * index;
     }
 
     private void startCursorAnimation(int targetIndex) {
