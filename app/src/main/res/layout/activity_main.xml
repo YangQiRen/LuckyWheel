@@ -19,7 +19,18 @@
         app:lkwCursor="@drawable/ic_cursor"
         android:id="@+id/luckyWheel"
         android:layout_width="300dp"
-        android:layout_height="300dp" />
+        android:layout_height="300dp" >
+
+    </rubikstudio.library.LuckyWheelView>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@android:drawable/ic_menu_send"
+        android:layout_alignParentLeft="true"/>
 
     <Button
         android:id="@+id/play"

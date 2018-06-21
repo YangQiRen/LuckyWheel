@@ -14,5 +14,6 @@
         android:id="@+id/cursorView"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"/>
 </FrameLayout>
