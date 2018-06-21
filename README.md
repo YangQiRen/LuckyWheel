@@ -1,6 +1,6 @@
 # Screenshot
 
-![Example Image](https://raw.github.com/thanhniencung/LuckyWheel/master/device-2016-11-05-214303.png)
+![Example Image](Screenshot_20180621-093500.jpg)
 
 # Usage
 
@@ -46,6 +46,62 @@ luckyWheelView.setLuckyRoundItemSelectedListener(new LuckyWheelView.LuckyRoundIt
 });
 ```
 
+
+# Cursor Animation
+
+cursor Swinging small animation
+```java
+        // 200ms
+        animCursor = ObjectAnimator.ofFloat(cursorView, "rotation", 0f, -30f, 0f);
+        animCursor.setDuration(200);
+        animCursor.setInterpolator(new AccelerateInterpolator());
+        animCursor.setRepeatCount(0);
+        animCursor.setRepeatMode(ValueAnimator.RESTART);
+        
+        // 設定cursor旋轉的中心點
+        cursorView.setPivotX(0f);
+        cursorView.setPivotY(cursorView.getWidth()/2);
+```
+
+Decelerate Interpolator to slow down the animation
+```java
+// 算角度，要轉幾圈（360度 * 圈數 - 目標角度）跟輪盤轉的角度一樣
+        float targetAngle = 360f * SECOND_OF_ROUND - getAngleOfIndexTarget(targetIndex) ;
+
+        // slow down
+        animCursorSlowDown = ValueAnimator.ofFloat(0, targetAngle);
+        // 10秒 1000=1秒
+        animCursorSlowDown.setDuration(SECOND_OF_ROUND * 1000);
+        animCursorSlowDown.setInterpolator(new DecelerateInterpolator());
+        animCursorSlowDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(final ValueAnimator animation) {
+                // 目前的角度 + 一開始的偏移角度22.5
+                float currentAngle = (float) animation.getAnimatedValue() + ((360f / GRID_OF_LUCKY_WHEEL) / 2);
+
+                // 這次轉的角度
+                float  angleOfThisTurn = currentAngle - preAngle;
+                // 是否執行動畫
+                int isStartAnimation = (int) (angleOfThisTurn / (360f / GRID_OF_LUCKY_WHEEL));
+
+                if ( isStartAnimation > 0 && !animCursor.isRunning() ) {
+                    Log.e("animCursor", "start()");
+                    preAngle += isStartAnimation * (360f / GRID_OF_LUCKY_WHEEL);
+                    animCursor.start();
+                }
+            }
+        });
+        animCursorSlowDown.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                preAngle = 0;
+            }
+        });
+
+        if ( !animCursorSlowDown.isStarted() ) {
+            animCursorSlowDown.start();
+        }
+```
 
 #Custom LuckyWheel
 
