@@ -13,12 +13,14 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import rubikstudio.library.LuckyWheelView;
 import rubikstudio.library.model.LuckyItem;
+import rubikstudio.library.model.WheelView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        final LuckyWheelView luckyWheelView = findViewById(R.id.luckyWheel);
+        final WheelView wheelView = findViewById(R.id.luckyWheel);
         cursorView = findViewById(R.id.imageView);
 
 
@@ -53,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
         /////////////////////
 
-        luckyWheelView.setData(data);
-        luckyWheelView.setRound(SECOND_OF_ROUND);
-        luckyWheelView.setPieBackgroundImage(R.drawable.wheel3);
+        wheelView.setData(data);
+        wheelView.setRound(SECOND_OF_ROUND);
+        Glide.with(this).load(R.drawable.wheel3).into(wheelView);
 //        luckyWheelView.setLuckyWheelCursorImage(R.drawable.ic_cursor);
 
         // Play Click listener
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int index = getRandomIndex();
-                luckyWheelView.startLuckyWheelWithTargetIndex(index);
+                wheelView.startLuckyWheelWithTargetIndex(index);
 
                 // cursor動畫
                 startCursorAnimation(index);
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        luckyWheelView.setLuckyRoundItemSelectedListener(new LuckyWheelView.LuckyRoundItemSelectedListener() {
+        wheelView.setLuckyRoundItemSelectedListener(new WheelView.LuckyRoundItemSelectedListener() {
             @Override
             public void LuckyRoundItemSelected(int index) {
                 Toast.makeText(getApplicationContext(), String.valueOf(index), Toast.LENGTH_SHORT).show();
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 設定cursor旋轉的中心點
         cursorView.setPivotX(0f);
-        cursorView.setPivotY(cursorView.getWidth()/2);
+        cursorView.setPivotY(cursorView.getHeight()/2);
 
         // 算角度，要轉幾圈（360度 * 圈數 - 目標角度）跟輪盤轉的角度一樣
         float targetAngle = 360f * SECOND_OF_ROUND - getAngleOfIndexTarget(targetIndex) ;
