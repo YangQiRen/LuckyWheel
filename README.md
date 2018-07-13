@@ -7,7 +7,7 @@
 Include LuckyWheel widget in your layout:
 
 ```xml
-<rubikstudio.library.LuckyWheelView
+<rubikstudio.library.model.WheelView
     android:layout_centerInParent="true"
     app:lkwBackgroundColor="#FF9800"
     app:lkwTextColor="#263238"
