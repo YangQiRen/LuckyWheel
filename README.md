@@ -1,6 +1,6 @@
 # Screenshot
 
-![Example Image](LuckyWheel/wheelCursor.gif)
+![Example Image](wheelCursor.gif)
 
 # Usage
 
