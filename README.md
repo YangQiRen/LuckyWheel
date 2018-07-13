@@ -1,6 +1,6 @@
 # Screenshot
 
-![Example Image](Screenshot_20180621-093500.jpg)
+![Example Image](LuckyWheel/wheelCursor.gif)
 
 # Usage
 
